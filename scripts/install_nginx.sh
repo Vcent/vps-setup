@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -euo pipefail
 
 DOMAIN="just.hosting"
@@ -31,14 +31,15 @@ cat > /var/www/just_hosting_index.html <<'HTML'
 </html>
 HTML
 
+# 修复Nginx配置文件中的变量名
 cat > "$SITE" <<NGINX
 server {
     listen 80;
     server_name _;
     location / {
         proxy_pass https://127.0.0.1:8443;
-        proxy_set_header Host $\host;
-        proxy_set_header X-Real-IP $\remote_addr;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
         proxy_ssl_verify off;
     }
 }
@@ -57,7 +58,7 @@ server {
     index just_hosting_index.html;
 
     location / {
-        try_files $\uri $\uri/ =404;
+        try_files $uri $uri/ =404;
     }
 }
 NGINX
