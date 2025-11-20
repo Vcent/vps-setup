@@ -31,8 +31,8 @@ cat > /var/www/just_hosting_index.html <<'HTML'
 </html>
 HTML
 
-# 修复Nginx配置文件中的变量名
-cat > "$SITE" <<NGINX
+# Use single quotes around NGINX to prevent shell expansion of variables
+cat > "$SITE" <<'NGINX'
 server {
     listen 80;
     server_name _;
@@ -48,8 +48,8 @@ server {
     listen 127.0.0.1:8443 ssl;
     server_name localhost;
 
-    ssl_certificate     $SSL_DIR/$DOMAIN.crt;
-    ssl_certificate_key $SSL_DIR/$DOMAIN.key;
+    ssl_certificate     /etc/ssl/custom/just.hosting.crt;
+    ssl_certificate_key /etc/ssl/custom/just.hosting.key;
 
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers HIGH:!aNULL:!MD5;
