@@ -23,11 +23,19 @@ set_or_replace "PasswordAuthentication" "no"
 set_or_replace "PermitEmptyPasswords" "no"
 set_or_replace "ChallengeResponseAuthentication" "no"
 
-# 重启 ssh 服务
+# 处理SSH服务重启
 if systemctl list-units --type=service | grep -q sshd; then
   systemctl restart sshd
-else
+elif systemctl list-units --type=service | grep -q ssh; then
   systemctl restart ssh || service ssh restart
+# 添加对ssh.socket的支持
+elif systemctl list-units --type=socket | grep -q ssh.socket; then
+  systemctl restart ssh.socket
+  # 同时重启sshd服务以确保配置生效
+  systemctl restart sshd.service || true
+else
+  echo "警告: 未找到SSH服务或socket，尝试重启默认服务"
+  systemctl restart sshd || systemctl restart ssh || service ssh restart
 fi
 
 echo "sshd 更新完成：Port=$SSH_PORT, 禁用 root 登录, 禁用密码登录"
