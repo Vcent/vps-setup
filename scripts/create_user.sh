@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/90-$USERNAME
-echo "配置 sudo 无密码"
 # 支持交互或无交互模式：按 Enter 使用默认值；在无交互（pipe/CI）时使用环境变量或默认值
 DEFAULT_USERNAME="deploy"
 DEFAULT_PUBKEY=""
