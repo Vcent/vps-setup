@@ -31,7 +31,7 @@ PASSWORD=${PASSWORD:-$(openssl rand -base64 12)}
 echo "$USERNAME:$PASSWORD" | chpasswd
 
 # 强制首次登录修改密码（可选）：将上面注释掉可取消强制修改
-chage -d 0 "$USERNAME" || true
+# chage -d 0 "$USERNAME" || true
 
 usermod -aG sudo "$USERNAME"
 echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/90-$USERNAME
@@ -50,5 +50,5 @@ fi
 echo "---- 账户信息（请保存） ----"
 echo "用户名: $USERNAME"
 echo "临时密码: $PASSWORD"
-echo "提示: 已强制首次登录修改密码。请在第一次登录后立即运行 'passwd' 更改密码，或在 root 下使用 'chpasswd' 更新。"
+echo "提示: 已配置SSH密钥认证，推荐使用密钥登录而非密码登录。"
 echo "---------------------------"
