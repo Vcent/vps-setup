@@ -1,0 +1,8 @@
+# ignore possible secrets and local reports
+*.pem
+*.key
+*.p12
+*.crt
+push_scan_report.*
+# IDE/temp
+.DS_Store
