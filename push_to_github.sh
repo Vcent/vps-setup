@@ -47,9 +47,12 @@ read -r -p "请输入 GitHub 仓库远程 URL (例如 git@github.com:yourname/vp
 USE_GH_CREATE=0
 if [[ "$REMOTE" =~ ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$ ]]; then
   if command -v gh >/dev/null 2>&1; then
-    read -r -p "检测到仓库名形式 '$REMOTE'，是否使用 gh 创建远程仓库并设置为 private? (yes/NO) " GHCONF
+    read -r -p "检测到仓库名形式 '$REMOTE'，是否使用 gh 创建远程仓库？(yes/NO) " GHCONF
     if [ "$GHCONF" = "yes" ]; then
       USE_GH_CREATE=1
+      # 添加仓库可见性选择
+      read -r -p "请选择仓库可见性 (public/private) [默认: private]: " REPO_VISIBILITY
+      REPO_VISIBILITY=${REPO_VISIBILITY:-"private"}
     fi
   else
     echo "提示：要自动创建仓库，请安装 gh (brew install gh)，或在 GitHub Web UI 手动创建，并传入 remote URL。"
@@ -80,7 +83,8 @@ git commit -m "$COMMIT_MSG" || echo "无变更要提交或提交失败"
 # 创建远程并 push
 if [ $USE_GH_CREATE -eq 1 ]; then
   echo "使用 gh 创建仓库: $REMOTE"
-  gh repo create "$REMOTE" --private --confirm || { echo "gh 创建失败，改为手动创建或提供 remote URL"; exit 1; }
+  # 根据用户选择设置仓库可见性
+  gh repo create "$REMOTE" --$REPO_VISIBILITY --confirm || { echo "gh 创建失败，改为手动创建或提供 remote URL"; exit 1; }
   git remote add origin "git@github.com:$REMOTE.git" 2>/dev/null || true
   git push -u origin main || git push -u origin master || true
   echo "已 push 到 git@github.com:$REMOTE.git"
