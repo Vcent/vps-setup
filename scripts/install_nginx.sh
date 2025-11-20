@@ -23,10 +23,47 @@ chmod 644 "$SSL_DIR/$DOMAIN.crt"
 cat > /var/www/just_hosting_index.html <<'HTML'
 <!doctype html>
 <html>
-<head><meta charset="utf-8"><title>just.hosting</title></head>
-<body style="font-family: Arial; text-align:center; padding:50px;">
-  <h1>just.hosting</h1>
-  <p>Minimal landing page — served by nginx (localhost:8443)</p>
+<head>
+    <meta charset="utf-8">
+    <title>just.hosting</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 1em;
+            font-weight: 700;
+        }
+        p {
+            font-size: 1.1em;
+            margin-bottom: 2em;
+        }
+        .footer {
+            margin-top: 3em;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>just.hosting</h1>
+        <p>Minimal landing page — served by nginx</p>
+        <p>Your web server is running correctly.</p>
+        <div class="footer">
+            <p>Just hosting, nothing more.</p>
+        </div>
+    </div>
 </body>
 </html>
 HTML
